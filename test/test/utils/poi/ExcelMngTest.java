@@ -1,16 +1,18 @@
 package test.utils.poi;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import utils.poi.ExcelMng;
+import utils.poi.ExcelManager;
 
 public class ExcelMngTest {
 
 	public static void main (String[] args) {
 		try {
-			ExcelMng excelMng = ExcelMng.createExcelMng("D:\\pleiades\\workspace\\Utils\\tmp\\aaa.xlsx", "原本");
+			ExcelManager excelManager = ExcelManager.createExcelManager("D:\\pleiades\\workspace\\Utils\\tmp\\aaa.xlsx", "原本");
 
-			System.out.println(excelMng);
+			System.out.println(excelManager);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -22,10 +24,11 @@ public class ExcelMngTest {
 	public void test() {
 
 		try {
-			ExcelMng excelMng = ExcelMng.createExcelMng("D:\\pleiades\\workspace\\Utils\\tmp\\POItest.xlsx");
+			ExcelManager excelManager = ExcelManager.createExcelManager("D:\\pleiades\\workspace\\Utils\\tmp\\POItest.xlsx");
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 

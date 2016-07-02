@@ -10,26 +10,48 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
-public class ExcelMng {
+public class ExcelManager {
 
 	private String bookPath;
 
 	private List<ExcelSheet> excelSheetList = new ArrayList<>();
 
-	public static ExcelMng createExcelMng (String excelPath) {
-		return createExcelMng(excelPath, null);
+	/**
+	 *
+	 */
+	private ExcelManager () {
+
 	}
 
-	public static ExcelMng createExcelMng (String excelPath, String sheetName) {
+	/**
+	 *
+	 * @param excelPath
+	 * @return
+	 */
+	public static ExcelManager createExcelManager (String excelPath) {
+		return createExcelManager(excelPath, null);
+	}
+	/**
+	 *
+	 * @param excelPath
+	 * @param sheetName
+	 * @return
+	 */
+	public static ExcelManager createExcelManager (String excelPath, String sheetName) {
 
-		ExcelMng excelMng = new ExcelMng();
+		if (excelPath == null || excelPath.length() == 0) {
+			throw new RuntimeException("パラメータが未設定 excelPath");
+		}
+
+		ExcelManager excelMng = new ExcelManager();
+
 		try {
 
 			excelMng.bookPath = excelPath;
 
-			Workbook workBook = new XSSFWorkbook(excelPath);
+			Workbook book = new XSSFWorkbook(excelPath);
 
-	        for (Sheet sheet : workBook) {
+	        for (Sheet sheet : book) {
 
 	        	if (sheetName == null || sheetName.equals(sheet.getSheetName())) {
 
@@ -43,7 +65,7 @@ public class ExcelMng {
 
 		                	Cell cell = row.getCell(index);
 
-		                	excelRow.addColumnValue(index, excelRow.convertColumnValue(cell));
+		                	excelRow.addColumnValue(index, excelRow.convertToString(cell));
 		                }
 
 		                excelSheet.addExcelRow(excelRow);
@@ -53,7 +75,7 @@ public class ExcelMng {
 	        	}
 	        }
 
-	        workBook.close();
+	        book.close();
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -61,10 +83,14 @@ public class ExcelMng {
 		return excelMng;
 	}
 
-
+	/**
+	 *
+	 * @param sheet
+	 */
 	public void addExcelSheet (ExcelSheet sheet) {
 		excelSheetList.add(sheet);
 	}
+
 	@Override
 	public String toString() {
 		return bookPath + System.lineSeparator() + excelSheetList.toString();
